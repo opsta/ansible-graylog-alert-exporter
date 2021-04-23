@@ -1,36 +1,39 @@
-Role Name
+ansible-graylog-alert-exporter
 =========
 
-A brief description of the role goes here.
+Install graylog alert exporter using ansible.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Ansible >= 2.10
 
 Role Variables
 --------------
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+- hosts: all
+  gather_facts: true
+  roles:
+    - ansible-graylog-alert-exporter
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Local Testing
+These steps are use to locally testing the role with [molecule](https://github.com/ansible-community/molecule).
+
+1. Install test requirements via `pip install -r test-requirements.txt`.
+
+2. Simple run `molecule test`.
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------

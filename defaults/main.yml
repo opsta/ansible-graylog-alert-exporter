@@ -1,7 +1,7 @@
 ---
 # For online install, specified graylog-alert-exporter version. See https://github.com/StartloJ/graylog-alert-exporter/releases.
 graylog_alert_exporter_version: 0.1.0
-# For offline install, specified binary path on the ansible controller.
+# For offline install, specified binary directory on the ansible controller.
 graylog_alert_exporter_binary_local_dir: ""
 
 ### graylog-alert-exporter configuration.
