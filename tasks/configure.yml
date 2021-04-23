@@ -1,0 +1,34 @@
+---
+- name: Copy the graylog-alert-exporter systemd service file
+  template:
+    src: graylog-alert-exporter.service.j2
+    dest: /etc/systemd/system/graylog-alert-exporter.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart graylog-alert-exporter
+
+- name: Copy the graylog-alert-exporter label config file
+  template:
+    src: labels.yml.j2
+    dest: "{{ _graylog_alert_exporter_binary_install_dir }}/labels.yml"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart graylog-alert-exporter
+
+- name: Copy the graylog-alert-exporter environment file
+  template:
+    src: alert-exporter.j2
+    dest: "/etc/default/alert-exporter"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart graylog-alert-exporter
+
+- name: Ensure graylog-alert-exporter service is enabled on boot
+  systemd:
+    daemon_reload: true
+    name: graylog-alert-exporter
+    enabled: true
+    state: started

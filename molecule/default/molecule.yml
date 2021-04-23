@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+lint: |
+  set -e
+  ansible-lint .
+
+platforms:
+  - name: ubuntu-bionic
+    image: quay.io/paulfantom/molecule-systemd:ubuntu-18.04
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: centos8
+    pre_build_image: true
+    image: quay.io/paulfantom/molecule-systemd:centos-8
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+provisioner:
+  name: ansible
+
+verifier:
+  name: ansible

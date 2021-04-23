@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-graylog-alert-exporter"
+      include_role:
+        name: "ansible-graylog-alert-exporter"

@@ -1,0 +1,21 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    # TODO: create test case for directories, files, user and permissions
+  
+    - name: Test exporter status
+      block:
+        - name: Get exporter status
+          uri:
+            url: "http://127.0.0.1:9889"
+            method: GET
+            status_code: 200
+          register: _exporter_index
+          until: _exporter_index.status == 200
+          retries: 5
+
+        - name: Assert that the exporter is running
+          assert:
+            that: "{{ _exporter_index.status == 200 }}"

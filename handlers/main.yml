@@ -1,0 +1,7 @@
+---
+- name: restart graylog-alert-exporter
+  become: true
+  systemd:
+    daemon_reload: true
+    name: graylog-alert-exporter
+    state: restarted

@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Caroline.
+  namespace: opsta
+  role_name: ansible_graylog_alert_exporter
+  description: Install Graylog Alert Exporter
+  license: MIT
+  min_ansible_version: 2.10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+    - name: EL
+      versions:
+        - 8
+  galaxy_tags: []
+
+dependencies: []

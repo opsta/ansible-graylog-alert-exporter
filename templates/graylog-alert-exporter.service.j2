@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Graylog Alert Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ _graylog_alert_exporter_system_user }}
+Group={{ _graylog_alert_exporter_system_group }}
+EnvironmentFile=/etc/default/alert-exporter
+ExecStart={{ _graylog_alert_exporter_binary_install_dir }}/graylog-alert-exporter
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
