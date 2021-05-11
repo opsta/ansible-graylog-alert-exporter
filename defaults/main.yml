@@ -1,16 +1,24 @@
 ---
 # For online install, specified graylog-alert-exporter version. See https://github.com/StartloJ/graylog-alert-exporter/releases.
 graylog_alert_exporter_version: 0.1.0
+
 # For offline install, specified binary directory on the ansible controller.
 graylog_alert_exporter_binary_local_dir: ""
+graylog_alert_exporter_binary_name: "graylog-alert-exporter"
 
 ### graylog-alert-exporter configuration.
 graylog_alert_exporter_listen_address: "0.0.0.0:9889"
 graylog_alert_exporter_metrics_path: "/metrics"
 graylog_alert_exporter_timeout: 600
-graylog_alert_exporter_interval: 600
+graylog_alert_exporter_interval: 5
 graylog_alert_exporter_debug: false
 graylog_alert_exporter_caller: false
+graylog_alert_exporter_labels_created: {}
+# Example use >> graylog_alert_exporter_labels_created
+# graylog_alert_exporter_labels_created:
+#   kubernetes_namespace_name: backlog.0.fields.kubernetes_namespace_name
+#   kubernetes_pod_name: backlog.0.fields.kubernetes_pod_name
+#   zone: backlog.0.fields.zone
 
 ### Private variables. Changes value of these variables are currently not supported.
 _graylog_alert_exporter_binary_install_dir: /etc/exporter/graylog-alert-exporter
