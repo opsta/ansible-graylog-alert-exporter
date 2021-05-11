@@ -1,9 +1,9 @@
 {{ ansible_managed | comment }}
 
-EXPORTER_LISTEN="{{ graylog_alert_exporter_listen_address }}"
-EXPORTER_PATH="{{ graylog_alert_exporter_metrics_path }}"
-EXPORTER_TIMEOUT="{{ graylog_alert_exporter_timeout }}"
-EXPORTER_INTERVAL="{{ graylog_alert_exporter_interval }}"
-EXPORTER_DEBUG="{{ graylog_alert_exporter_debug }}"
-EXPORTER_CALLER="{{ graylog_alert_exporter_caller }}"
-EXPORTER_LABEL_FILE="{{ _graylog_alert_exporter_binary_install_dir }}/labels.yml"
+EXPORTER_LISTEN="{{ ga_exporter_listen_address }}"
+EXPORTER_PATH="{{ ga_exporter_metrics_path }}"
+EXPORTER_TIMEOUT="{{ ga_exporter_timeout }}"
+EXPORTER_INTERVAL="{{ ga_exporter_interval }}"
+EXPORTER_DEBUG="{{ ga_exporter_debug }}"
+EXPORTER_CALLER="{{ ga_exporter_caller }}"
+EXPORTER_LABEL_FILE="{{ _ga_exporter_binary_install_dir }}/labels.yml"

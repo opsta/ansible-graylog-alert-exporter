@@ -11,7 +11,7 @@
 - name: Copy the graylog-alert-exporter label config file
   template:
     src: labels.yml.j2
-    dest: "{{ _graylog_alert_exporter_binary_install_dir }}/labels.yml"
+    dest: "{{ _ga_exporter_binary_install_dir }}/labels.yml"
     owner: root
     group: root
     mode: '0644'

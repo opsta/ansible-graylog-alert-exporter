@@ -2,7 +2,7 @@
 - block:
     - name: Get latest release from github
       uri:
-        url: "https://api.github.com/repos/StartloJ/graylog-alert-exporter/releases/latest"
+        url: "{{ ga_exporter_base_repo }}/releases/latest"
         method: GET
         status_code: 200
       register: _latest_release
@@ -11,26 +11,21 @@
 
     - name: "Set graylog-alert-exporter version to {{ _latest_release.json.tag_name[1:] }}"
       set_fact:
-        graylog_alert_exporter_version: "{{ _latest_release.json.tag_name[1:] }}"
+        ga_exporter_version: "{{ _latest_release.json.tag_name[1:] }}"
 
   when:
-    - graylog_alert_exporter_version == "latest"
-    - graylog_alert_exporter_binary_local_dir | length == 0
+    - ga_exporter_version == "latest"
+    - ga_exporter_binary_local_dir | length == 0
   delegate_to: localhost
   run_once: true
 
 - block:
-    - name: Get checksum list from github
-      set_fact:
-        _checksums: "{{ lookup('url', 'https://github.com/StartloJ/graylog-alert-exporter/releases/download/v' + graylog_alert_exporter_version + '/checksums.txt', wantlist=True) | list }}"
-      run_once: true
-
     - name: "Get checksum for {{ go_arch }} architecture"
       set_fact:
-        graylog_alert_exporter_checksum: "{{ item.split(' ')[0] }}"
-      with_items: "{{ _checksums }}"
+        ga_exporter_checksum: "{{ item.split(' ')[0] }}"
+      with_items: "{{ ga_exporter_checksum }}"
       when:
         - "('Linux_' + go_arch + '.tar.gz') in item"
 
   delegate_to: localhost
-  when: graylog_alert_exporter_binary_local_dir | length == 0
+  when: ga_exporter_binary_local_dir | length == 0

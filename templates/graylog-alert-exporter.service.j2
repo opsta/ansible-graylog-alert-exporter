@@ -6,10 +6,10 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-User={{ _graylog_alert_exporter_system_user }}
-Group={{ _graylog_alert_exporter_system_group }}
+User={{ _ga_exporter_system_user }}
+Group={{ _ga_exporter_system_group }}
 EnvironmentFile=/etc/default/alert-exporter
-ExecStart={{ _graylog_alert_exporter_binary_install_dir }}/graylog-alert-exporter
+ExecStart={{ _ga_exporter_binary_install_dir }}/graylog-alert-exporter
 
 Restart=on-failure
 
