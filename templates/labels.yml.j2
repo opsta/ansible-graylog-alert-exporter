@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
 labels:
-  kubernetes_namespace_name: backlog.0.fields.kubernetes_namespace_name
-  kubernetes_pod_name: backlog.0.fields.kubernetes_pod_name
-  zone: backlog.0.fields.zone
+{% for key, val in graylog_alert_exporter_labels_created.items() %}
+  {{ key }}: {{ val }}
+{% endfor %}
