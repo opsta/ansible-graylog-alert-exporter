@@ -70,7 +70,7 @@
 
 - name: Install graylog-alert-exporter binary from local
   copy:
-    src: "{{ graylog_alert_exporter_binary_local_dir }}/graylog-alert-exporter"
+    src: "{{ graylog_alert_exporter_binary_local_dir | regex_replace('\\/$', '') }}/{{ graylog_alert_exporter_binary_name | regex_replace('^\\/', '') }}"
     dest: "{{ _graylog_alert_exporter_binary_install_dir }}/graylog-alert-exporter"
     owner: root
     group: root
