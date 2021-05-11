@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
 labels:
-{% for key, val in graylog_alert_exporter_labels_created.items() %}
+{% for key, val in ga_exporter_labels_created.items() %}
   {{ key }}: {{ val }}
 {% endfor %}

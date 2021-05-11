@@ -1,38 +1,35 @@
 ---
 - name: Create the exporter group
   group:
-    name: "{{ _graylog_alert_exporter_system_group }}"
+    name: "{{ _ga_exporter_system_group }}"
     state: present
     system: true
-  when: _graylog_alert_exporter_system_group != "root"
+  when: _ga_exporter_system_group != "root"
 
 - name: Create the exporter user
   user:
-    name: "{{ _graylog_alert_exporter_system_user }}"
-    groups: "{{ _graylog_alert_exporter_system_group }}"
+    name: "{{ _ga_exporter_system_user }}"
+    groups: "{{ _ga_exporter_system_group }}"
     append: true
-    shell: /usr/sbin/nologin
+    shell: /bin/false
     system: true
     create_home: false
-    home: /
-  when: _graylog_alert_exporter_system_user != "root"
+  when: _ga_exporter_system_user != "root"
 
 - name: Create graylog-alert-exporter binary and config directory
   file:
-    path: "{{ _graylog_alert_exporter_binary_install_dir }}"
+    path: "{{ _ga_exporter_binary_install_dir }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ _ga_exporter_system_user }}"
+    group: "{{ _ga_exporter_system_group }}"
     mode: '0775'
 
 - block:
     - name: Download graylog-alert-exporter archive to local tmp folder
       get_url:
-        url: "https://github.com/StartloJ/graylog-alert-exporter/releases/download/v{{ graylog_alert_exporter_version }}/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}.tar.gz"
-        dest: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}.tar.gz"
-        checksum: "sha256:{{ graylog_alert_exporter_checksum }}"
-        owner: root
-        group: root
+        url: "{{ ga_exporter_url }}"
+        dest: "/tmp/{{ ga_exporter_release_file }}"
+        checksum: "sha256:{{ ga_exporter_checksum }}"
         mode: '0644'
       register: _download_archive
       until: _download_archive is succeeded
@@ -41,38 +38,32 @@
 
     - name: Create a directory for unpack archive
       file:
-        path: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}"
+        path: "{{ _ga_exporter_tmp_path }}"
         state: directory
-        owner: root
-        group: root
         mode: '0644'
 
     - name: Unpack graylog-alert-exporter archive
       unarchive:
-        src: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}.tar.gz"
-        dest: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}"
+        src: "/tmp/{{ ga_exporter_release_file }}"
+        dest: "{{ _ga_exporter_tmp_path }}"
         remote_src: true
-        creates: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}/graylog-alert-exporter"
-        owner: root
-        group: root
+        creates: "{{ _ga_exporter_tmp_path }}/{{ ga_exporter_binary_name }}"
         mode: '0644'
 
     - name: Install graylog-alert-exporter binary
       copy:
-        src: "/tmp/graylog-alert-exporter_{{ graylog_alert_exporter_version }}_Linux_{{ go_arch }}/graylog-alert-exporter"
-        dest: "{{ _graylog_alert_exporter_binary_install_dir }}/graylog-alert-exporter"
+        src: "{{ _ga_exporter_tmp_path }}/{{ ga_exporter_binary_name }}"
+        dest: "{{ _ga_exporter_binary_install_dir }}/{{ ga_exporter_binary_name }}"
         remote_src: true
-        owner: root
-        group: root
         mode: '0755'
 
-  when: graylog_alert_exporter_binary_local_dir | length == 0
+  when: ga_exporter_binary_local_dir | length == 0
 
 - name: Install graylog-alert-exporter binary from local
   copy:
-    src: "{{ graylog_alert_exporter_binary_local_dir | regex_replace('\\/$', '') }}/{{ graylog_alert_exporter_binary_name | regex_replace('^\\/', '') }}"
-    dest: "{{ _graylog_alert_exporter_binary_install_dir }}/graylog-alert-exporter"
-    owner: root
-    group: root
+    src: "{{ ga_exporter_binary_local_dir | regex_replace('\\/$', '') }}/{{ ga_exporter_binary_name | regex_replace('^\\/', '') }}"
+    dest: "{{ _ga_exporter_binary_install_dir }}/{{ ga_exporter_binary_name }}"
+    owner: "{{ _ga_exporter_system_user }}"
+    group: "{{ _ga_exporter_system_group }}"
     mode: '0755'
-  when: graylog_alert_exporter_binary_local_dir | length > 0
+  when: ga_exporter_binary_local_dir | length > 0
