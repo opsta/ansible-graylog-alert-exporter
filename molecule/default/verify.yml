@@ -4,7 +4,6 @@
   gather_facts: false
   tasks:
     # TODO: create test case for directories, files, user and permissions
-  
     - name: Test exporter status
       block:
         - name: Get exporter status
@@ -15,7 +14,6 @@
           register: _exporter_index
           until: _exporter_index.status == 200
           retries: 5
-
         - name: Assert that the exporter is running
           assert:
             that: "{{ _exporter_index.status == 200 }}"
