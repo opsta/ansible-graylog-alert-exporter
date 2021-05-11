@@ -30,6 +30,10 @@ These steps are use to locally testing the role with [molecule](https://github.c
 
 2. Simple run `molecule test`.
 
+> You can test all step with wrapper use  
+> `$ tox`   
+> and configure in **tox.ini**
+
 License
 -------
 
