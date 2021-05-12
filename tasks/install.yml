@@ -54,9 +54,22 @@
       copy:
         src: "{{ _ga_exporter_tmp_path }}/{{ ga_exporter_binary_name }}"
         dest: "{{ _ga_exporter_binary_install_dir }}/{{ ga_exporter_binary_name }}"
+        owner: "{{ _ga_exporter_system_user }}"
+        group: "{{ _ga_exporter_system_group }}"
         remote_src: true
         mode: '0755'
 
+    - name: Clean temp tar file
+      file:
+        state: absent
+        path: /tmp/{{ ga_exporter_release_file }}
+
+    - name: Clean temp extract folder
+      file:
+        state: absent
+        path: "{{ _ga_exporter_tmp_path }}"
+  tags:
+    - molecule-idempotence-notest
   when: ga_exporter_binary_local_dir | length == 0
 
 - name: Install graylog-alert-exporter binary from local
