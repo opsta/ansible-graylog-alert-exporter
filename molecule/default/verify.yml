@@ -17,3 +17,33 @@
         - name: Assert that the exporter is running
           assert:
             that: "{{ _exporter_index.status == 200 }}"
+    - name: Ensure file is existed
+      block:
+        - name: Set variable file paths
+          set_fact:
+            _binary_path: "/etc/exporter/graylog-alert-exporter/graylog-alert-exporter"
+            _env_config_path: "/etc/default/alert-exporter"
+            _user_owner: "exporter"
+        - name: Get binary existed
+          stat:
+            path: "{{ _binary_path }}"
+          register: ga_binary_stat
+        - name: Get default env existed
+          stat:
+            path: "{{ _env_config_path }}"
+          register: ga_env_stat
+
+        - name: Assert that exporter binary is existed
+          assert:
+            fail_msg: "Can't found binary in {{ _binary_path }}"
+            that:
+              - ga_binary_stat.stat.exists
+              - ga_binary_stat.stat.executable
+              - ga_binary_stat.stat.pw_name == "{{ _user_owner }}"
+        - name: Assert that default env file is existed
+          assert:
+            fail_msg: "Can't found default env in {{ _env_config_path }}"
+            that:
+              - ga_env_stat.stat.exists
+              - ga_env_stat.stat.readable
+              - ga_env_stat.stat.pw_name == 'root'
